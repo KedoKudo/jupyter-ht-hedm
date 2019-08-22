@@ -38,8 +38,8 @@ class Experiment:
         self.suspend_shutter = SuspendFloor(self.shutter.pss_state, 1)
 
         # monitor APS current
-        self.suspend_APS_current = SuspendFloor(self._aps.current, 2, resume_thresh=10)
-        self.RE.install_suspender(self.suspend_APS_current)
+#         self.suspend_APS_current = SuspendFloor(self._aps.current, 2, resume_thresh=10)
+#         self.RE.install_suspender(self.suspend_APS_current)
 
     @staticmethod
     def get_shutter(mode):
@@ -210,7 +210,7 @@ class Tomography(Experiment):
             from ophyd import sim
             det = sim.noisy_det
         elif mode.lower() in ['dryrun', 'production']:
-            det = PointGreyDetector6IDD("1idPG2", name='det')
+            det = PointGreyDetector6IDD("1idPG2:", name='det')
             # check the following page for important information
             # https://github.com/BCDA-APS/use_bluesky/blob/master/notebooks/sandbox/images_darks_flats.ipynb
             #

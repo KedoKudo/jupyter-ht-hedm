@@ -11,7 +11,7 @@ import bluesky.plan_stubs    as bps
 
 from .utility            import load_config
 
-@bpp.run_decorator()
+#@bpp.run_decorator()
 def collect_white_field(experiment, cfg_tomo, atfront=True):
     """
     Collect white/flat field images by moving the sample out of the FOV
@@ -40,11 +40,11 @@ def collect_white_field(experiment, cfg_tomo, atfront=True):
     # move sample back to FOV
     # NOTE:
     # not sure is this will work or not...
-    yield from bps.mv(tomostage.samX, cfg_tomo['initial_ksamX'])
-    yield from bps.mv(tomostage.samY, cfg_tomo['initial_ksamZ'])
+    yield from bps.mv(tomostage.ksamX, cfg_tomo['initial_ksamX'])
+    yield from bps.mv(tomostage.ksamZ, cfg_tomo['initial_ksamZ'])
 
 
-@bpp.run_decorator()
+#@bpp.run_decorator()
 def collect_dark_field(experiment, cfg_tomo):
     """
     Collect dark field images by close the shutter
@@ -62,7 +62,7 @@ def collect_dark_field(experiment, cfg_tomo):
     yield from bps.trigger_and_read([det])
 
 
-@bpp.run_decorator()
+#@bpp.run_decorator()
 def step_scan(experiment, cfg_tomo):
     """
     Collect projects with step motion
@@ -88,7 +88,7 @@ def step_scan(experiment, cfg_tomo):
         yield from bps.trigger_and_read([det])
 
 
-@bpp.run_decorator()
+#@bpp.run_decorator()
 def fly_scan(experiment, cfg_tomo):
     """
     Collect projections with fly motion
@@ -173,9 +173,8 @@ def tomo_scan(experiment, cfg):
     cfg['tomo']['back_white_ksamX'] = x0 + dbx
     cfg['tomo']['back_white_ksamZ'] = z0 + dbz
     
-    
-    @bpp.stage_decorator([det])
     @bpp.run_decorator()
+    @bpp.stage_decorator([det])
     def scan_closure():
         # open shutter for beam
         yield from bps.mv(shutter, 'open')
